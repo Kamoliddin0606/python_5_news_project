@@ -1,0 +1,28 @@
+{% for comment in comments %}
+    <ol class="children" style'color:red;'>
+        <li class="single_comment_area">
+            <!-- Comment Content -->
+            <div class="comment-content">
+                <!-- Comment Meta -->
+                <div class="comment-meta d-flex align-items-center justify-content-between">
+                    <p><a href="#" class="post-author">{{comment.author.first_name}}</a> on <a href="#" class="post-date">{{comment.created}}</a></p>
+                    <a href="#" class="comment-reply btn world-btn">Reply</a>
+                </div>
+                <p>{{comment.body}}...</p>
+                <form method="post"  id="form">
+                    {% csrf_token %}
+                    <input style="display: none;" type="text" value="{{comment.id}}" name="parent_comment">
+                    <div class="group">
+                        <textarea type="text" name="body" autofocus></textarea>
+                    </div>
+                    
+                    <input type="submit" class="btn world-btn" value="Post comment"></input>
+                </form>
+            </div>
+            {% if comment.get_children %}
+                                
+            {% include 'postapp/commentform.html' with comments=comment.get_children %}
+             {% endif %}
+        </li>
+    </ol>
+{% endfor %}

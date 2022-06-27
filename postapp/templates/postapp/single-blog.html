@@ -1,0 +1,276 @@
+{% extends 'postapp/base.html' %}
+{% block title %}
+    {{post.title}}
+{% endblock title %}
+
+{% block content %}
+
+    <!-- ***** Header Area Start ***** -->
+
+    <!-- ***** Header Area End ***** -->
+
+    <!-- ********** Hero Area Start ********** -->
+    <div class="hero-area height-600 bg-img background-overlay" style="background-image: url(img/blog-img/bg2.jpg);">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center justify-content-center">
+                <div class="col-12 col-md-8 col-lg-6">
+                    <div class="single-blog-title text-center">
+                        <!-- Catagory -->
+                        <div class="post-cta"><a href="#">{{post.category}}</a></div>
+                        <h3>{{post.title}}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ********** Hero Area End ********** -->
+
+    <div class="main-content-wrapper section-padding-100">
+        <div class="container">
+            <div class="row justify-content-center">
+                <!-- ============= Post Content Area ============= -->
+                <div class="col-12 col-lg-8">
+                    <div class="single-blog-content mb-100">
+                        <!-- Post Meta -->
+                        <div class="post-meta">
+                            <p><a href="#" class="post-author">{{post.author.first_name}}</a> on <a href="#" class="post-date">{{post.created_date}}</a></p>
+                        </div>
+                        <!-- Post Content -->
+                        <div class="post-content">
+                            <h4>{{post.title}}</h4>
+                            <img src="{{post.image.url}}" alt="{{post.title}}">
+                            <h5>{{post.anons}}</h5>
+                            <h6>{{post.discreption}}</h6>
+
+                            <ul class="post-tags">
+                                {% for tag in tags %}
+                                
+                                <li><a href="#">{{tag}}</a></li>
+                                {% endfor %}
+
+                            </ul>
+
+                            <ul class="post-tags">
+                               
+                             
+                                <li><a href="#">views: {{hitcount.pk}}</a></li>
+                                
+                                {% if user.is_authenticated %}
+                                
+                                <li> <i onclick="myFunction(this)" class="fa fa-thumbs-up" id='like'></i></li>
+                                {% endif %}
+                            </ul>
+                            <!-- Post Meta -->
+                           
+                            <div class="post-meta second-part">
+                                <p><a href="#" class="post-author">{{post.author.first_name}}</a> on <a href="#" class="post-date">{{post.created_date}}</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              
+                <!-- ========== Sidebar Area ========== -->
+                <div class="col-12 col-md-8 col-lg-4">
+                    <div class="post-sidebar-area mb-100">
+                        <!-- Widget Area -->
+                        <div class="sidebar-widget-area">
+                            <h5 class="title">About World</h5>
+                            <div class="widget-content">
+                                <p>The mango is perfect in that it is always yellow and if it’s not, I don’t want to hear about it. The mango’s only flaw, and it’s a minor one, is the effort it sometimes takes to undress the mango, carve it up in a way that makes sense, and find its way to the mouth.</p>
+                            </div>
+                        </div>
+                        <!-- Widget Area -->
+                        <div class="sidebar-widget-area">
+                            <h5 class="title">Top Stories</h5>
+                            <div class="widget-content">
+                                <!-- Single Blog Post -->
+                                <div class="single-blog-post post-style-2 d-flex align-items-center widget-post">
+                                    <!-- Post Thumbnail -->
+                                    <div class="post-thumbnail">
+                                        <img src="img/blog-img/b11.jpg" alt="">
+                                    </div>
+                                    <!-- Post Content -->
+                                    <div class="post-content">
+                                        <a href="#" class="headline">
+                                            <h5 class="mb-0">How Did van Gogh’s Turbulent Mind Depict One of the Most</h5>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!-- Single Blog Post -->
+                                <div class="single-blog-post post-style-2 d-flex align-items-center widget-post">
+                                    <!-- Post Thumbnail -->
+                                    <div class="post-thumbnail">
+                                        <img src="img/blog-img/b13.jpg" alt="">
+                                    </div>
+                                    <!-- Post Content -->
+                                    <div class="post-content">
+                                        <a href="#" class="headline">
+                                            <h5 class="mb-0">How Did van Gogh’s Turbulent Mind Depict One of the Most</h5>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!-- Single Blog Post -->
+                                <div class="single-blog-post post-style-2 d-flex align-items-center widget-post">
+                                    <!-- Post Thumbnail -->
+                                    <div class="post-thumbnail">
+                                        <img src="img/blog-img/b14.jpg" alt="">
+                                    </div>
+                                    <!-- Post Content -->
+                                    <div class="post-content">
+                                        <a href="#" class="headline">
+                                            <h5 class="mb-0">How Did van Gogh’s Turbulent Mind Depict One of the Most</h5>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!-- Single Blog Post -->
+                                <div class="single-blog-post post-style-2 d-flex align-items-center widget-post">
+                                    <!-- Post Thumbnail -->
+                                    <div class="post-thumbnail">
+                                        <img src="img/blog-img/b10.jpg" alt="">
+                                    </div>
+                                    <!-- Post Content -->
+                                    <div class="post-content">
+                                        <a href="#" class="headline">
+                                            <h5 class="mb-0">How Did van Gogh’s Turbulent Mind Depict One of the Most</h5>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!-- Single Blog Post -->
+                                <div class="single-blog-post post-style-2 d-flex align-items-center widget-post">
+                                    <!-- Post Thumbnail -->
+                                    <div class="post-thumbnail">
+                                        <img src="img/blog-img/b12.jpg" alt="">
+                                    </div>
+                                    <!-- Post Content -->
+                                    <div class="post-content">
+                                        <a href="#" class="headline">
+                                            <h5 class="mb-0">How Did van Gogh’s Turbulent Mind Depict One of the Most</h5>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Widget Area -->
+                        <div class="sidebar-widget-area">
+                            <h5 class="title">Stay Connected</h5>
+                            <div class="widget-content">
+                                <div class="social-area d-flex justify-content-between">
+                                    <a href="#"><i class="fa fa-facebook"></i></a>
+                                    <a href="#"><i class="fa fa-twitter"></i></a>
+                                    <a href="#"><i class="fa fa-pinterest"></i></a>
+                                    <a href="#"><i class="fa fa-vimeo"></i></a>
+                                    <a href="#"><i class="fa fa-instagram"></i></a>
+                                    <a href="#"><i class="fa fa-google"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Widget Area -->
+                        <div class="sidebar-widget-area">
+                            <h5 class="title">Today’s Pick</h5>
+                            <div class="widget-content">
+                                <!-- Single Blog Post -->
+                                <div class="single-blog-post todays-pick">
+                                    <!-- Post Thumbnail -->
+                                    <div class="post-thumbnail">
+                                        <img src="img/blog-img/b22.jpg" alt="">
+                                    </div>
+                                    <!-- Post Content -->
+                                    <div class="post-content px-0 pb-0">
+                                        <a href="#" class="headline">
+                                            <h5>How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in Physics?</h5>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============== Related Post ============== -->
+            <div class="row">
+                {% for post in latestnews %}
+                <div class="col-12 col-md-6 col-lg-4">
+                    <!-- Single Blog Post -->
+                    <div class="single-blog-post">
+                        <!-- Post Thumbnail -->
+                        <div class="post-thumbnail">
+                            <img src="img/blog-img/b1.jpg" alt="">
+                            <!-- Catagory -->
+                            <div class="post-cta"><a href="#">{{post.category.title}}</a></div>
+                        </div>
+                        <!-- Post Content -->
+                        <div class="post-content">
+                            <a href="#" class="headline">
+                                <h5>{{post.title}}</h5>
+                            </a>
+                            <p>{{post.anons}}</p>
+                            <!-- Post Meta -->
+                            <div class="post-meta">
+                                <p><a href="#" class="post-author">{{post.author.first_name}}</a> on <a href="#" class="post-date">{{post.created_date}}</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="row">
+                <div class="col-12 col-lg-8" id='commentform'>
+                    <div class="post-a-comment-area mt-70">
+                        <h5>Get in Touch</h5>
+                        <!-- Contact Form -->
+         
+                        <form method="post" >
+                            {% csrf_token %}
+                            <div class="group">
+                                <textarea type="text" name="body" autofocus></textarea>
+                            </div>
+                            
+                            <input type="submit" class="btn world-btn" value="Post comment"></input>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-8">
+                    <!-- Comment Area Start -->
+                    <div class="comment_area clearfix mt-70">
+                        <ol>
+                            {% for comment in comments %}
+                            <li class="single_comment_area">
+                                <!-- Comment Content -->
+                                <div class="comment-content"  >
+                                    <!-- Comment Meta -->
+                                    <div class="comment-meta d-flex align-items-center justify-content-between">
+                                        <p><a href="#" class="post-author">{{comment.author.first_name}}</a> on <a href="#" class="post-date">{{comment.created}}</a></p>
+                                        <a href="#{{comment.id}}" class="comment-reply btn world-btn" id='reply'>Reply</a>
+                                    </div>
+                                    <p>{{comment.body}}...</p>
+                                    <form method="post"  id="form">
+                                        {% csrf_token %}
+                                        <input style="display: none;" type="text" value="{{comment.id}}" name="parent_comment">
+                                        <div class="group">
+                                            <textarea type="text" name="body" autofocus></textarea>
+                                        </div>
+                                        
+                                        <input type="submit" class="btn world-btn" value="Post comment"></input>
+                                    </form>
+                                </div>
+                                {% if comment.get_children %}
+                                
+                                    {% include 'postapp/commentform.html' with comments=comment.get_children %}
+                                {% endif %}
+
+
+                            </li>
+                            {% endfor %}
+                
+          
+                            
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
