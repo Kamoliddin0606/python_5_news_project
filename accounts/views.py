@@ -29,8 +29,12 @@ def loginview(request):
 
 
     return render(request=request, template_name='registrations/login.html', )
-class LogOut(LogoutView):
-    template_name= 'postapp/index.html'
+def logoutview(request):
+    
+    message = f'Dear {request.user.first_name}! You have been logged in'
+    request.session['message']= message
+    logout(request=request)
+    return redirect('home')
 
 def CreateUser(request):
     if request.method == 'POST':
@@ -39,8 +43,10 @@ def CreateUser(request):
             print(user_form)
             if user_form.is_valid():
                 user = user_form.save() 
-                user.set_password(user.password)
+                user.set_password(request.POST.get('password1'))
                 user.save() 
+                message = 'The registration was successful. You can log in'
+                request.session['message']= message
         # if form.is_valid():
             # form.save()
             return redirect('home')

@@ -145,7 +145,7 @@ hr {
 /* Set a style for all buttons */
 
 button {
-    background-color: #04AA6D;
+    background-color: #383b3a;
     color: white;
     padding: 14px 20px;
     margin: 8px 0;
@@ -164,7 +164,7 @@ button:hover {
 
 .cancelbtn {
     padding: 14px 20px;
-    background-color: #f44336;
+    background-color: #969696;
 }
 
 

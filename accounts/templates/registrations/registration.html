@@ -1,41 +1,82 @@
-<!DOCTYPE html>
-<html>
-<style>
+{% extends 'postapp/base.html' %}
+{% block title %}
+Login 
+{% endblock title %}
+{% block content %}
 
-</style>
-<body>
+<div class="hero-area">
+ 
+    <!-- Hero Slides Area -->
+    <div class="hero-slides owl-carousel">
+        <!-- Single Slide -->
+        <div class="single-hero-slide bg-img background-overlay" style="background-image: url({{ 'img/blog-img/bg2.jpg' }});"></div>
+        <!-- Single Slide -->
+        <div class="single-hero-slide bg-img background-overlay" style="background-image: url({{ 'img/blog-img/bg1.jpg' }});"></div>
+    </div>
+
+    <!-- Hero Post Slide -->
+    <div class="hero-post-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="hero-post-slide">
+                       
+                         {% for post in objects %}
+                          <div class="single-slide d-flex align-items-center">
+                            <div class="post-number">
+                                <p>{{post.id}}</p>
+                            </div>
+                            <div class="post-title">
+                                <a href="{% url 'detail' post.id %}">{{post.title}}</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% if request.session.message %}
+<div class="alert">
+    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+    {{request.session.message}}
+</div>
+{% endif %} 
 
 <form method='post' style="border:1px solid #ccc">
-    {% csrf_token %}
-  <div class="container">
-    <h1>Sign Up</h1>
-    <p>Please fill in this form to create an account.</p>
-    <hr>
+  {% csrf_token %}
+<div class="container">
+  <h1 style='text-align: center; margin:5px;'>Sign Up</h1>
+  <p>Please fill in this form to create an account.</p>
+  <hr>
 
-    <label for="email"><b>Email</b></label>
-    <input type="text" placeholder="Enter Email" name="email" required>
+  <label for="email"><b>Email</b></label>
+  <input type="text" placeholder="Enter Email" name="email" required>
 
-    <label for="username"><b>Username</b></label>
-    <input type="text" placeholder="Enter username" name="username" required>
+  <label for="username"><b>Username</b></label>
+  <input type="text" placeholder="Enter username" name="username" required>
 
-    <label for="password1"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="password1" required>
+  <label for="password1"><b>Password</b></label>
+  <input type="password" placeholder="Enter Password" name="password1" required>
 
-    <label for="password2"><b>Repeat Password</b></label>
-    <input type="password" placeholder="Repeat Password" name="password2" required>
-    
-    {% comment %} <label>
-      <input type="checkbox" checked="checked" name="remember" style="margin-bottom:15px"> Remember me
-    </label> {% endcomment %}
-    
-    <p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
+  <label for="password2"><b>Repeat Password</b></label>
+  <input type="password" placeholder="Repeat Password" name="password2" required>
+  
+  {% comment %} <label>
+    <input type="checkbox" checked="checked" name="remember" style="margin-bottom:15px"> Remember me
+  </label> {% endcomment %}
+  
+  <p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
 
-    <div class="clearfix">
-      <button type="button" class="cancelbtn">Cancel</button>
-      <button type="submit" class="signupbtn">Sign Up</button>
-    </div>
+  <div class="clearfix">
+    <button type="button" class="cancelbtn">Cancel</button>
+    <button type="submit" class="signupbtn">Sign Up</button>
   </div>
+</div>
 </form>
 
-</body>
-</html>
+
+{% endblock content %}

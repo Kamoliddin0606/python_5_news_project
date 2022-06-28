@@ -19,7 +19,7 @@ def home(request):
     # paginator_page = request.GET.get('list')
     # page_objects = pages.get_page(paginator_page)
     objectcarousel = Post.objects.all().order_by('-created_date')[:7]
-    objects = Post.objects.all().order_by('-created_date')[:2]
+    objects = Post.objects.all().order_by('-created_date')[:7]
     objectstrend = Post.objects.all().order_by('-views')[:10]
     print(objectstrend)
     catsecond =''
@@ -57,7 +57,7 @@ def detailPost(request ,pk):
     hit_count = get_hitcount_model().objects.get_for_object(post)
     hits = hit_count.hits
    
-    hitcontext = context['hitcount'] = {'pk': hit_count.pk}
+    
   
     hit_count_response = HitCountMixin.hit_count(request, hit_count)
 
@@ -67,7 +67,7 @@ def detailPost(request ,pk):
         hitcontext['hit_counted'] = hit_count_response.hit_counted
         hitcontext['hit_message'] = hit_count_response.hit_message
         hitcontext['total_hits'] = hits
-
+    hitcontext = context['hitcount'] = {'pk': hit_count.pk, 'hits':hits}
     if request.method == 'POST' and request.POST.get('body'):
         
         if request.POST.get('body'):
