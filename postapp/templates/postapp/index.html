@@ -3,7 +3,9 @@
 {% load static %}
 
 {% block title %}Home{% endblock title %}
-{% block content %}    <div class="hero-area">
+{% block content %}   
+
+<div class="hero-area">
  
     <!-- Hero Slides Area -->
     <div class="hero-slides owl-carousel">
@@ -39,6 +41,12 @@
     </div>
 </div>
 <!-- ********** Hero Area End ********** -->
+{% if request.session.message %}
+<div class="alert">
+    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+    {{request.session.message}}
+</div>
+{% endif %} 
 
 <div class="main-content-wrapper section-padding-100">
     <div class="container">

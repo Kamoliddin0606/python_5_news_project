@@ -30,18 +30,7 @@
 </head>
 
 <body>
-    <style>
-        .fa {
-            color:#ccc;
-          font-size: 24px;
-          cursor: pointer;
-          user-select: none;
-        }
-        
-        .fa:hover {
-          color: blue;
-        }
-        </style>
+
     <!-- Preloader Start -->
     <div id="preloader">
         <div class="preload-content">
@@ -66,36 +55,36 @@
                                 <li class="nav-item active">
                                     <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                                 </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="index.html">Home</a>
-                                        <a class="dropdown-item" href="catagory.html">Catagory</a>
-                                        <a class="dropdown-item" href="single-blog.html">Single Blog</a>
-                                        <a class="dropdown-item" href="regular-page.html">Regular Page</a>
-                                        <a class="dropdown-item" href="contact.html">Contact</a>
-                                    </div>
-                                </li>
+                                
+                         
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Gadgets</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Lifestyle</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Video</a>
-                                </li>
+                                    <a class="nav-link" href="#">Contact</a>
+                                </li> 
+                                     
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">Contact</a>
                                 </li>
+                                {% if user.is_authenticated %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                                </li> 
+                                <li class="nav-item" >
+                                    <a class="nav-link" href="#" style='color:red;'>{{user.first_name}} {{user.last_name}}</a>
+                                </li> 
+
+                                {% else %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                                </li> 
+                                {% endif %}  
                             </ul>
                             <!-- Search Form  -->
                             <div id="search-wrapper">
-                                <form action="#">
+                                <div style='heigth:16px;'>
                                     <input type="text" id="search" placeholder="Search something...">
                                     <div id="close-icon"></div>
                                     <input class="d-none" type="submit" value="">
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </nav>
@@ -106,6 +95,7 @@
     <!-- ***** Header Area End ***** -->
 
     <!-- ********** Hero Area Start ********** -->
+
 {% block content %}
 
 {% endblock content %}

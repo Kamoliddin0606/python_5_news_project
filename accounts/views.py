@@ -1,11 +1,36 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.views import LoginView, LogoutView
-from .forms import UserCreateForm
+from .forms import UserCreateForm, LoginForm
 from .models import CustomUser
-class Login(LoginView):
-    template_name = 'registrations/login.html'
+from django.contrib.auth import login, logout, authenticate
+# class Login(LoginView):
+#     template_name = 'registrations/login.html'
+
+def loginview(request):
+    
+    if request.method == 'POST':
+        postrequest = request.POST
+        form =LoginForm(data=postrequest)
+        print(form)
+        if form.is_valid():
+            user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+            print(form.cleaned_data['username'],form.cleaned_data['password'])
+            if user is not None:
+                login(request=request, user=user)
+                  
+                message = f'Dear {user.username}! You have been logged in'
+                request.session['message']= message
+                return redirect('home')
+            else:
+                message = 'Login failed!'
+                request.session['message']= message
+                return redirect('login')
+            
+
+
+    return render(request=request, template_name='registrations/login.html', )
 class LogOut(LogoutView):
-    template_name= 'registrations/logout.html'
+    template_name= 'postapp/index.html'
 
 def CreateUser(request):
     if request.method == 'POST':
