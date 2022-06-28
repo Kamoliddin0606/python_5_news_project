@@ -41,7 +41,7 @@
                             <img src="{{post.image.url}}" alt="{{post.title}}">
                             <h5>{{post.anons}}</h5>
                             <h6>{{post.discreption}}</h6>
-
+                            
                             <ul class="post-tags">
                                 {% for tag in tags %}
                                 
@@ -56,8 +56,15 @@
                                 <li><a href="#">views: {{hitcount.hits}}</a></li>
                                 
                                 {% if user.is_authenticated %}
-                                
-                                <li> <i onclick="myFunction(this)" class="fa fa-thumbs-up" id='like'></i></li>
+                                    
+                                   {% if like == True %}
+                                     <li> <i onclick="myFunction(this)"  style = 'color:blue;'class="fa fa-thumbs-up" id='like'></i></li>
+                                   {% elif like == False %}
+                                     <li> <i onclick="myFunction(this)"  style = 'color:blue;'class="fa fa-thumbs-down" id='like'></i></li>
+                                   {% elif like == None %}
+                                     <li> <i onclick="myFunction(this)"  style = 'color:#ccc;'class="fa fa-thumbs-down" id='like'></i></li>
+                                   {% endif %}
+                               
                                 {% endif %}
                             </ul>
                             <!-- Post Meta -->
@@ -224,7 +231,7 @@
                         <form method="post" >
                             {% csrf_token %}
                             <div class="group">
-                                <textarea type="text" name="body" autofocus></textarea>
+                                <textarea type="text" name="body" ></textarea>
                             </div>
                             
                             <input type="submit" class="btn world-btn" value="Post comment"></input>

@@ -53,7 +53,7 @@
                         <div class="collapse navbar-collapse" id="worldNav">
                             <ul class="navbar-nav ml-auto">
                                 <li class="nav-item active">
-                                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                                    <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
                                 </li>
                                 
                          
@@ -152,31 +152,55 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> | Mad
     <script src="{% static 'js/plugins.js'%}"></script>
     <!-- Active js -->
     <script src="{% static 'js/active.js' %}"></script>
+    <script src="{% static 'js/ajax_requests.js' %}"></script>
+    {% comment %} {% url 'detail' post.id %} {% endcomment %}
     <script>
         function myFunction(x) {
-          x.classList.toggle("fa-thumbs-down");
-         
-            // создаем AJAX-вызов
+            let choice = null;
+            if (x.className == 'fa fa-thumbs-up'){
+                
+                choice = true;
+            
+            }
+            else{
+                choice = false;
+            } 
+            
+            
             $.ajax({
-                headers: { "X-CSRFToken": '{{csrf_token}}' },
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest",
+                    "X-CSRFToken": '{{ csrf_token }}',
+                  },
                 type: 'POST',
-                url: '/',
+                url: '',
                 contentType: 'application/json',
-                data: "{'csrfmiddlewaretoken': '{{ csrf_token }}'}",
+                data: `{'csrfmiddlewaretoken': '{{ csrf_token }}', 'choice':${choice}}`,
                 dataType: 'json',
                 success: (data) => {
-                  console.log(data.like);
+                    console.log(data.like);
+                    if (data.like ==true){
+                        x.className="fa fa-thumbs-up";
+                        x.style.color = 'blue';
+                    }
+                    else if(data.like ==false){
+                        x.className = "fa fa-thumbs-down";
+                        x.style.color = 'red';
+                    } 
+                    else if(data.like ==null){
+                        x.className = "fa fa-thumbs-down";
+                        x.style.color = '#ccc';
+                    } 
                 },
                 error: (error) => {
-                  console.log(error);
-                  console.log('Error');
+                    console.log(error);
+                    console.log('Error');
                 }
-              });
+            });
             return false;
-       
+        
         }
-        </script>
-
+    </script>
 
 </body>
 
