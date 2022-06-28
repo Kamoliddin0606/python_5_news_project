@@ -100,7 +100,7 @@
                                                 <div class="post-thumbnail">
                                                     <img src="{{post.image.url}}" alt="">
                                                     <!-- Catagory -->
-                                                    <div class="post-cta"><a href="#">{{post.category.title}}</a></div>
+                                                    <div class="post-cta"><a href="{% url 'category' post.category.id %}">{{post.category.title}}</a></div>
                                                 </div>
                                                 <!-- Post Content -->
                                                 <div class="post-content">
@@ -211,7 +211,7 @@
                                             <div class="post-thumbnail">
                                                 <img src="{{post.image.url}}" alt="">
                                                 <!-- Catagory -->
-                                                <div class="post-cta"><a href="#">{{post.category}}</a></div>
+                                                <div class="post-cta"><a href="{% url 'category' post.category.id %}">{{post.category}}</a></div>
                                             </div>
                                             <!-- Post Content -->
                                             <div class="post-content">
