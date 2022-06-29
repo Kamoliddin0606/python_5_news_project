@@ -172,7 +172,10 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> | Mad
                 dataType: 'json',
                 success: (data) => {
                     if(data.result==true){
-                        $('#name').val=''
+                        document.getElementById("contact").reset();
+                        document.getElementById("message").innerHTML=data.message;
+                        document.getElementById("messageBlock").style.display='block';
+
                     }
                
                 },

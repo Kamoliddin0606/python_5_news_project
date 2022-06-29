@@ -7,7 +7,14 @@ Contact
 {% block content %}
 <div class="hero-area height-400 bg-img background-overlay" style="background-image: url({% static 'img/blog-img/bg4.jpg' %});"></div>
     <!-- ********** Hero Area End ********** -->
-
+    
+    {% if request.session.message %}
+    <div class="alert" id='messageBlock'>
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+        <h4 id ='message'style='text-align:center;'></h4>
+    
+    </div>
+    {%endif%}
     <section class="contact-area section-padding-100">
         <div class="container">
             <div class="row justify-content-center">

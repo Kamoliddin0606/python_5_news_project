@@ -150,8 +150,12 @@ def contact(request):
             form = ContactForm(request.GET)
             if form.is_valid():
                 form.save()
-                return JsonResponse({'result':True})
+                message = 'Your message is save to data base!'
+                
+                return JsonResponse({'result':True, 'message':message})
             print(form)
             print(request.GET)
-            return JsonResponse({'result':False})
+            message = 'we must enter all dates'
+           
+            return JsonResponse({'result':False, 'message':message})
     return render(request=request, template_name='postapp/contact.html')   
