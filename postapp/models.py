@@ -72,3 +72,18 @@ class Comment(models.Model):
         
         return comments
         
+class BackGroundHeader(models.Model):
+    image = models.ImageField(upload_to='bg/', null=True, blank=True)
+    title = models.CharField(max_length=150)
+    body = models.TextField(null=True, blank=True)
+    
+
+    def __str__(self) -> str:
+        return f'{self.title}...'
+class Contact(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    message = models.TextField()
+
+    def __str__(self) -> str:
+        return f'{self.name} {self.message[:40]}...'

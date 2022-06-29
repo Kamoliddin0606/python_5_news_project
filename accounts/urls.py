@@ -4,4 +4,5 @@ urlpatterns = [
     path('login/',loginview, name='login'),
     path('logout/',logoutview, name='logout'),
     path('registration/',CreateUser, name='registration')
+    
 ]

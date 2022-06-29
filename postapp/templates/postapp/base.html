@@ -58,7 +58,7 @@
                                 
                          
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Contact</a>
+                                    <a class="nav-link" href="{% url 'contact' %}">Contact</a>
                                 </li> 
                                      
                           
@@ -155,6 +155,36 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> | Mad
     <script src="{% static 'js/ajax_requests.js' %}"></script>
     {% comment %} {% url 'detail' post.id %} {% endcomment %}
     <script>
+        $("#contact").submit(function contact(x) {
+            console.log('Contact button clicked');
+            let serializedData = $(this).serialize();
+            console.log(serializedData);
+            $.ajax({
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest",
+                    "X-CSRFToken": '{{ csrf_token }}',
+                  },
+                type: 'GET',
+                url: '',
+                contentType: 'application/json',
+                {% comment %} data: `{'csrfmiddlewaretoken': '{{ csrf_token }}', 'name':${$('#name').val()}, 'email':${$('#email').val()},'message':${$('#message').val()}}`, {% endcomment %}
+                data: serializedData,
+                dataType: 'json',
+                success: (data) => {
+                    if(data.result==true){
+                        $('#name').val=''
+                    }
+               
+                },
+                error: (error) => {
+                    console.log(error);
+                    console.log('Error');
+                }
+            });
+            return false;
+        
+        })
+
         function myFunction(x) {
             let choice = null;
             if (x.className == 'fa fa-thumbs-up'){

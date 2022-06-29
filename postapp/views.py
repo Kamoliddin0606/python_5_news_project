@@ -14,6 +14,7 @@ from django.http import HttpResponseRedirect
 from hitcount.utils import get_hitcount_model
 from hitcount.views import HitCountMixin
 from django.views.decorators.csrf import csrf_exempt
+from .forms import ContactForm
 def category(request, pk=None):
 
     objectcarousel = Post.objects.filter(pk=pk).order_by('-created_date')[:7]
@@ -46,11 +47,7 @@ def home(request,pk=None):
         objectcarousel = Post.objects.all().order_by('-created_date')[:7]
         objects = Post.objects.all().order_by('-created_date')[:7]
         objectstrend = Post.objects.all().order_by('-views')[:10]
-    else:
-        objectcarousel = Post.objects.filter(pk=pk).order_by('-created_date')[:7]
-        objects = Post.objects.filter(pk=pk).order_by('-created_date')[:7]
-        objectstrend = Post.objects.filter(pk=pk).order_by('-views')[:10]
-        print('____________',objectcarousel, '____________')
+    
     catsecond =''
     if Category.objects.all().count() <7 :
         catfirst = Category.objects.all()
@@ -62,9 +59,10 @@ def home(request,pk=None):
         'catsecond':catsecond,
         
     }
+    bgimage1 = BackGroundHeader.objects.all().first()
+    bgimage2 = BackGroundHeader.objects.all().last()
 
-
-    context = {'objects':objects, 'objectcarousel':objectcarousel, 'categories':categories, 'objectstrend':objectstrend,}
+    context = {'objects':objects, 'objectcarousel':objectcarousel, 'categories':categories, 'objectstrend':objectstrend, 'bgimage':{'image1':bgimage1,'image1':bgimage2}}
 
     # return render(request=request, template_name='postapp/index.html', context={'objects':page_objects})
 
@@ -144,4 +142,16 @@ def detailPost(request ,pk):
     return render(request=request, template_name='postapp/single-blog.html', context=context)
 
     
-        
+def contact(request):
+    if request.method =="GET":
+        print('__post_')
+        is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+        if is_ajax:
+            form = ContactForm(request.GET)
+            if form.is_valid():
+                form.save()
+                return JsonResponse({'result':True})
+            print(form)
+            print(request.GET)
+            return JsonResponse({'result':False})
+    return render(request=request, template_name='postapp/contact.html')   
