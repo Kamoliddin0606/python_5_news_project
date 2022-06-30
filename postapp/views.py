@@ -59,10 +59,10 @@ def home(request,pk=None):
         'catsecond':catsecond,
         
     }
-    bgimage1 = BackGroundHeader.objects.all().first()
-    bgimage2 = BackGroundHeader.objects.all().last()
+    bgimages = BackGroundHeader.objects.all()
+   
 
-    context = {'objects':objects, 'objectcarousel':objectcarousel, 'categories':categories, 'objectstrend':objectstrend, 'bgimage':{'image1':bgimage1,'image1':bgimage2}}
+    context = {'objects':objects, 'objectcarousel':objectcarousel, 'categories':categories, 'objectstrend':objectstrend, 'bgimages':bgimages}
 
     # return render(request=request, template_name='postapp/index.html', context={'objects':page_objects})
 

@@ -67,7 +67,7 @@
                                     <a class="nav-link" href="{% url 'logout' %}">Logout</a>
                                 </li> 
                                 <li class="nav-item" >
-                                    <a class="nav-link" href="#" style='color:red;'>{{user.first_name}} {{user.last_name}}</a>
+                                    <a class="nav-link" href="{% url 'profile' user.slug %}" style='color:red;'>{{user.first_name}} {{user.last_name}}</a>
                                 </li> 
 
                                 {% else %}

@@ -44,7 +44,10 @@ def CreateUser(request):
             if user_form.is_valid():
                 user = user_form.save() 
                 user.set_password(request.POST.get('password1'))
-                user.save() 
+                try:
+                    user.save() 
+                except:
+                    print(err)
                 message = 'The registration was successful. You can log in'
                 request.session['message']= message
         # if form.is_valid():
@@ -56,3 +59,8 @@ def CreateUser(request):
         form = UserCreateForm()
     return render(request=request, template_name='registrations/registration.html', context={'form':form})
     
+def profile(request, slug):
+    posts = CustomUser.objects.get(slug=slug).post_set.all()
+    print(posts)
+    context ={'posts':posts}
+    return render(request=request, template_name='profile/profile.html', context=context)

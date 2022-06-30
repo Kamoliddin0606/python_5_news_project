@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'hitcount',
     'taggit',
+    'phonenumber_field',
+    
 ]
 
 MIDDLEWARE = [
