@@ -16,10 +16,10 @@ from hitcount.views import HitCountMixin
 from django.views.decorators.csrf import csrf_exempt
 from .forms import ContactForm
 def category(request, pk=None):
-
-    objectcarousel = Post.objects.filter(pk=pk).order_by('-created_date')[:7]
-    objects = Post.objects.filter(pk=pk).order_by('-created_date')[:7]
-    objectstrend = Post.objects.filter(pk=pk).order_by('-views')[:10]
+    
+    objectcarousel = Category.objects.get(pk=pk).post.order_by('-created_date')[:7]
+    objects = Category.objects.get(pk=pk).post.order_by('-created_date')[:7]
+    objectstrend = Category.objects.get(pk=pk).post.order_by('-views')[:10]
     print('____________',objectcarousel, '____________')
     catsecond =''
     if Category.objects.all().count() <7 :
