@@ -1,5 +1,5 @@
 {% extends 'profile/base.html' %}
-{% block title %}{{user.username}}{% endblock title %}
+{% block title %}{{userprofile.username}}{% endblock title %}
 
 {% block content %}
 
@@ -43,7 +43,7 @@
         <div class="w3-panel " style='display:flex;flex-wrap:wrap;margin:0;padding:0;align-items: center;
         justify-content: center;'>
         <button class="w3-button w3-dark-grey w3-padding-small w3-margin-top w3-margin-bottom ">
-            <i class="fa fa-edit" style="font-size:16px"></i><i class='w3-margin-left'>Edit</i>
+            <i class="fa fa-edit" style="font-size:16px"></i><i class='w3-margin-left'><a href='{% url 'editpost' slug=userprofile.slug id=post.id %}'>Edit</a></i>
         </button>
         <button class="w3-button w3-dark-grey w3-padding-small w3-margin-top w3-margin-bottom w3-margin-left">
             <i class="fa fa-remove" style="font-size:16px;color:white;"></i><i class='w3-margin-left'>Remove</i>

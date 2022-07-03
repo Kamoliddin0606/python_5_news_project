@@ -146,6 +146,8 @@ def contact(request):
     if request.method =="GET":
         print('__post_')
         is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+        print(request.headers)
+        print(is_ajax)
         if is_ajax:
             form = ContactForm(request.GET)
             if form.is_valid():

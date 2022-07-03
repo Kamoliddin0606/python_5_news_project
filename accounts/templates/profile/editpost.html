@@ -1,0 +1,59 @@
+{% extends 'profile/base.html' %}
+{% block title %}{{userprofile.username}}{% endblock title %}
+
+{% block content %}
+
+  
+    <!-- Contact Section -->
+    <div class="w3-container w3-padding-large w3-silver">
+      <h4 id="contact"><b>Edit Post</b></h4>
+      {% comment %} {% for field in form %}
+        <div class='w3-section'>
+              
+              {{ field.errors }}
+              {{ field.label_tag }} {{ field }}
+              {% if field.help_text %}
+              <p class="help">{{ field.help_text|safe }}</p>
+              {% endif %}
+          </div>
+      {% endfor %} {% endcomment %}
+      <hr class="w3-opacity">
+      <form id='editpostform' method='post' enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="w3-section">
+          <label>Title</label>
+          <input class="w3-input w3-border" type="text" name="title" value='{{post.title}}'>
+        </div>
+        <div class="w3-section">
+          <label>Anons</label>
+          <input class="w3-input w3-border" type="text" name="anons" value='{{post.anons}}'>
+        </div>
+        <div class="w3-section">
+          <label>Discreption</label>
+          <textarea class="w3-input w3-border" type="text" name="discreption"  rows="4" cols="50" >'{{post.discreption}}'</textarea>
+        </div>
+        <img src='{{post.image.url}}' alt = '{{post.title}}' id='image' width='400px;' name='image'></img>
+        <div class="w3-section">
+          <label>Image</label>
+          <input class="w3-input w3-border" type="file" name="image" id='image' accept='image/*'  >
+        </div>      
+        <div class='w3-section'>
+          <label for="cars">Choose a category:</label>
+            
+          <select name="category" id="categories">
+            {% for cat in categories %}
+              {% if cat.id == post.category_id %}
+                <option value="{{cat.id}}" selected="selected">{{cat.title}}</option>
+              {% else %}
+              <option value="{{cat.id}}">{{cat.title}}</option>
+              {% endif %}
+              
+
+            {% endfor %}
+          </select>
+        </div>
+
+        <button type="submit" class="w3-button w3-black w3-margin-bottom"><i class="fa fa-save w3-margin-right"></i>Save changes</button>
+      </form>
+    </div>
+{% endblock content %}

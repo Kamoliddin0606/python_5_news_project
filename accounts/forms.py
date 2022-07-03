@@ -6,17 +6,17 @@ from .models import CustomUser
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = CustomUser
-        fields = ('username', 'email')
+        fields = ('username', 'email','avatar', 'bio', 'phonenumber')
 
 class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model =CustomUser
-        fields =('username', 'email')
+        fields =('username', 'email','avatar', 'bio', 'phonenumber')
 
 class UserCreateForm(UserCreationForm):
     class Meta:
         model = CustomUser
-        fields = ('username', 'email')
+        fields = ('username', 'email','avatar', 'bio', 'phonenumber')
 
 
 class LoginForm(forms.Form):
