@@ -1,0 +1,38 @@
+{% extends 'profile/base.html' %}
+{% block title %}{{userprofile.username}}{% endblock title %}
+
+{% block content %}
+ 
+  <!-- Images of Me -->
+  <div class="w3-row-padding w3-padding-16" id="about">
+    <div class="w3-col m6">
+      <img src="{{post.image.url}}" alt="Me" style="width:100%; display:center;">
+    </div>
+    <div class="w3-col m6">
+     
+    </div>
+  </div>
+
+  
+    <h4><b>{{post.title}}</b></h4>
+    <p>{{post.discreption}}</p>
+    <hr>
+    
+    <h4></h4>
+    
+    <form method='post'>
+      {% csrf_token %}
+      {% if like %}
+          {% if like.like == True %}
+            <button  type='submit' class='w3-button w3-white'><i class="fa fa-thumbs-up" aria-hidden="true" style='color:#333;'></i></button>
+          {% else %}
+            <button  type='submit' class='w3-button w3-white'><i class="fa fa-thumbs-down" aria-hidden="true" style='color:#333;'></i></button>
+          {% endif %}
+      {% else %}
+        <button  type='submit' class='w3-button w3-white'><i class="fa fa-hand-fist w3-white" aria-hidden="true" style='color:#333 !important;'>Press me</i></button>
+      {% endif %}
+    
+    </form>
+
+  </div>
+{% endblock content %}

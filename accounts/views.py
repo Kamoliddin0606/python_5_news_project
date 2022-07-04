@@ -2,14 +2,15 @@ from multiprocessing import managers
 import os
 from traceback import print_tb
 from unicodedata import category
-from django.shortcuts import redirect, render
+from urllib import request
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.views import LoginView, LogoutView
 from .forms import UserCreateForm, LoginForm,UserChangeForm
 from postapp.forms import PostForm
 from .models import CustomUser
 from django.contrib.auth import login, logout, authenticate
 from postapp.models import Category
-from postapp.models import Post
+from postapp.models import Post, Like
 from django.http import HttpResponse, JsonResponse
 from django.core import serializers
 from django.forms.models import model_to_dict
@@ -166,7 +167,8 @@ def removepost(request, slug, id):
 def detailpost(request,slug, id):
     pass
 def editprofile(request, slug):
-    
+
+    form = UserChangeForm()
     object = CustomUser.objects.get(slug=slug)
     categoriessellect = Category.objects.all()
 
@@ -184,9 +186,11 @@ def editprofile(request, slug):
        
         form = UserChangeForm(request.POST, request.FILES, instance=object)
         print(form)
+        print(form)
         if form.is_valid():
             
-            form.save()
+            user =form.save(commit=False)
+            user.slug = object.slug
             return redirect('profile', object.slug)
     
 
@@ -205,5 +209,39 @@ def editprofile(request, slug):
     
 
                 # print(request.GET.get('test'))
-    context = {'categories':categories,'categoriessellect':categoriessellect,'object':object, 'userprofile':object}
+    context = {'categories':categories,'categoriessellect':categoriessellect,'object':object, 'userprofile':object, 'form':form}
     return render(request=request, template_name='profile/editprofile.html', context=context)
+
+def detailpostprofile(request, slug, id):
+    author = CustomUser.objects.get(slug=slug)
+    
+    
+    if id:
+        post = Post.objects.get(id=id)
+    if Category.objects.all().count() <7 :
+        catfirst = Category.objects.all()
+    else:
+        catfirst = Category.objects.all()[:6]
+        catsecond = Category.objects.all()[6:]
+    categories ={ 
+        'catfirst':catfirst,
+        'catsecond':catsecond,
+        
+    }
+    if request.method=='POST':
+        likeObject = Like.objects.filter(post = post, author=author)
+        if likeObject and likeObject[0].like==True:
+            likeObject.update(like=False)
+        elif likeObject and likeObject[0].like==False:
+            likeObject.delete()
+        else:
+            Like.objects.create(author=author, post = post, like=True)
+        return redirect('detailpostprofile', slug=slug, id=id)
+    try:
+        like = Like.objects.get(post= post, author=author)
+    except:
+        like=None
+
+
+    context = {'categories':categories, 'userprofile':CustomUser.objects.get(slug=slug), 'post':post, 'like':like}
+    return render(request=request, template_name='profile/detailpostprofile.html', context=context)

@@ -35,7 +35,7 @@
     <div class="w3-third w3-container w3-margin-bottom">
         <img src="{{post.image.url}}" alt="Norway" style="width:100%" class="w3-hover-opacity">
         <div class="w3-container w3-white">
-        <p><b>{{ post.title}}</b></p>
+        <h2><b><a href='{% url 'detailpostprofile' id=post.id slug=post.author.slug %}' style='font-size: 20px;'>{{ post.title}}</b></h2>
         <p>{{post.anons}} </p>
         <p ><a style='color:blue;'  href='{% url 'profile' post.author.slug %}'>{{post.author.first_name}}</a> on {{post.created_date}}</p>
         <p style='margin-left:20px;'><strong>Views: </strong>{{post.get_count_of_views}}    <strong style='margin-left:20px;'>Likes: </strong>{{post.get_count_of_likes}} <strong style='margin-left:20px;'>Comments: </strong>{{post.get_count_of_comments}}</p>
