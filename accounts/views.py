@@ -1,15 +1,19 @@
 from multiprocessing import managers
 import os
+from traceback import print_tb
 from unicodedata import category
 from django.shortcuts import redirect, render
 from django.contrib.auth.views import LoginView, LogoutView
-from .forms import UserCreateForm, LoginForm
+from .forms import UserCreateForm, LoginForm,UserChangeForm
 from postapp.forms import PostForm
 from .models import CustomUser
 from django.contrib.auth import login, logout, authenticate
 from postapp.models import Category
 from postapp.models import Post
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
+from django.core import serializers
+from django.forms.models import model_to_dict
+import json
 # class Login(LoginView):
 #     template_name = 'registrations/login.html'
 
@@ -54,7 +58,7 @@ def CreateUser(request):
                 try:
                     user.save() 
                 except:
-                    print(err)
+                    print('err')
                 message = 'The registration was successful. You can log in'
                 request.session['message']= message
         # if form.is_valid():
@@ -66,7 +70,8 @@ def CreateUser(request):
         form = UserCreateForm()
     return render(request=request, template_name='registrations/registration.html', context={'form':form})
     
-def profile(request, slug):
+def profile(request, slug, cat_id=None):
+    
     if Category.objects.all().count() <7 :
         catfirst = Category.objects.all()
     else:
@@ -77,29 +82,53 @@ def profile(request, slug):
         'catsecond':catsecond,
         
     }
-   
-    posts = CustomUser.objects.get(slug=slug).post_set.all()
-    print(posts)
+    if cat_id == None:
+        
+        posts = CustomUser.objects.get(slug=slug).post_set.all()
+    else:
+        print(type(cat_id))
+        category = Category.objects.get(id=cat_id)
+        posts = CustomUser.objects.get(slug=slug).post_set.filter(category=category)
+    is_ajax =request.headers.get('X-Requested-With')== 'XMLHttpRequest'
+    print(is_ajax)
+    if request.method == 'GET' and  is_ajax:
+        print(request.GET.get('test'))
+        category = Category.objects.get(id=request.GET.get('cat_id'))
+        posts = Post.objects.filter(category=category)
+        data = serializers.serialize('json', posts)
+        print(posts)
+        
+        return HttpResponse(data,
+                         content_type="application/json")
     context ={'posts':posts, 'categories':categories,'userprofile':CustomUser.objects.get(slug=slug)}
     return render(request=request, template_name='profile/profile.html', context=context)
 
-def editpost(request, slug, id):
+def editpost(request, slug, id=None):
     
     categories = Category.objects.all()
     author = CustomUser.objects.get(slug=slug)
     # print(request.user.username,CustomUser.objects.get(slug=slug).username )
-    post=''
-    if request.user.slug == author.slug:
-       post = author.post_set.get(id=id)
-     
+    post=None
+    
+    if request.user.slug == author.slug and id!=None:
+        post = author.post_set.get(id=id)
+    
     # print('_____test____')
     if request.method == 'POST':
-        form = PostForm(request.POST, request.FILES, instance=post)
-        
-        if form.is_valid():
+        if post:
+            form = PostForm(request.POST, request.FILES, instance=post)
             
-            form.save()
-            return redirect('profile', author.slug)
+            if form.is_valid():
+                
+                form.save()
+                return redirect('profile', author.slug)
+        else:
+            form = PostForm(request.POST,request.FILES)
+            if form.is_valid():
+                post = form.save(commit=False)
+                post.author = author
+                post.save()
+                return redirect('profile', author.slug)
         title  = request.POST.get('title')
         anons  = request.POST.get('anons')
         discreption  = request.POST.get('discreption')
@@ -119,9 +148,62 @@ def editpost(request, slug, id):
                 
             print('ajax')
             return JsonResponse({'result':True,})
-            # print(request.GET.get('test'))
+    
+
+                # print(request.GET.get('test'))
     context = {'categories':categories,'post':post,'userprofile':CustomUser.objects.get(slug=slug)}
     return render(request=request, template_name='profile/editpost.html', context=context)
 
+def removepost(request, slug, id):
+    post = Post.objects.filter(author=CustomUser.objects.get(slug=slug), id=id)
+    if post:
+        print(post)
+        post.delete()
+    else:
+        print("I don't get your message")
+
+    return redirect('profile', slug=slug)
 def detailpost(request,slug, id):
     pass
+def editprofile(request, slug):
+    
+    object = CustomUser.objects.get(slug=slug)
+    categoriessellect = Category.objects.all()
+
+    if Category.objects.all().count() <7 :
+        catfirst = Category.objects.all()
+    else:
+        catfirst = Category.objects.all()[:6]
+        catsecond = Category.objects.all()[6:]
+    categories ={ 
+        'catfirst':catfirst,
+        'catsecond':catsecond,
+        
+    }
+    if request.method == 'POST':
+       
+        form = UserChangeForm(request.POST, request.FILES, instance=object)
+        print(form)
+        if form.is_valid():
+            
+            form.save()
+            return redirect('profile', object.slug)
+    
+
+        is_ajax = request.headers.get('X-Requested-With')== 'XMLHttpRequest'
+        # print(request.FILES, '______POST')
+        if is_ajax:
+            print(request.POST)
+            title = request.POST.get("title")
+            discreption = request.POST.get("discreption")
+            anons = request.POST.get('anons')
+            category = request.POST.get('categories')
+            print(title,anons,discreption,category)
+                
+            print('ajax')
+            return JsonResponse({'result':True,})
+    
+
+                # print(request.GET.get('test'))
+    context = {'categories':categories,'categoriessellect':categoriessellect,'object':object, 'userprofile':object}
+    return render(request=request, template_name='profile/editprofile.html', context=context)

@@ -30,7 +30,7 @@
   
   <!-- Second Photo Grid-->
   <div class="w3-row-padding" style='  display: flex;  
-  flex-wrap: wrap;'>
+  flex-wrap: wrap;' id='postcontainer'>
   {% for post in posts %}
     <div class="w3-third w3-container w3-margin-bottom">
         <img src="{{post.image.url}}" alt="Norway" style="width:100%" class="w3-hover-opacity">
@@ -43,10 +43,10 @@
         <div class="w3-panel " style='display:flex;flex-wrap:wrap;margin:0;padding:0;align-items: center;
         justify-content: center;'>
         <button class="w3-button w3-dark-grey w3-padding-small w3-margin-top w3-margin-bottom ">
-            <i class="fa fa-edit" style="font-size:16px"></i><i class='w3-margin-left'><a href='{% url 'editpost' slug=userprofile.slug id=post.id %}'>Edit</a></i>
+            <i class="fa fa-edit" ></i><i class='w3-margin-left'><a href='{% url 'editpost' slug=userprofile.slug id=post.id %}' style="font-size:16px;color:white">Edit</a></i>
         </button>
         <button class="w3-button w3-dark-grey w3-padding-small w3-margin-top w3-margin-bottom w3-margin-left">
-            <i class="fa fa-remove" style="font-size:16px;color:white;"></i><i class='w3-margin-left'>Remove</i>
+            <i class="fa fa-remove" style="font-size:16px;color:white;"></i><i class='w3-margin-left'><a href='{% url 'removepost' slug=userprofile.slug id=post.id %}' style="font-size:16px;color:white">Remove</a></i>
         </button>
     </div>
         {% endif %}

@@ -1,0 +1,57 @@
+{% extends 'profile/base.html' %}
+{% block title %}{{userprofile.username}}{% endblock title %}
+
+{% block content %}
+
+  
+    <!-- Contact Section -->
+    <div class="w3-container w3-padding-large w3-silver">
+      <h4 id="contact"><b>Edit Post</b></h4>
+      {% comment %} {% for field in form %}
+        <div class='w3-section'>
+              
+              {{ field.errors }}
+              {{ field.label_tag }} {{ field }}
+              {% if field.help_text %}
+              <p class="help">{{ field.help_text|safe }}</p>
+              {% endif %}
+          </div>
+      {% endfor %} {% endcomment %}
+      <hr class="w3-opacity">
+      <form id='editpostform' method='post' enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="w3-section">
+          <label>User name</label>
+          <input class="w3-input w3-border" type="text" name="username" value='{{object.username}}'>
+        </div>
+        <div class="w3-section">
+          <label>Email</label>
+          <input class="w3-input w3-border" type="email" name="email" value='{{object.email}}'>
+        </div>
+        <div class="w3-section">
+          <label>First name</label>
+          <input class="w3-input w3-border" type="text" name="first_name" value='{{object.first_name}}'>
+        </div>
+        <div class="w3-section">
+          <label>Last name</label>
+          <input class="w3-input w3-border" type="text" name="last_name" value='{{object.last_name}}'>
+        </div>
+        <div class="w3-section">
+          <label>BIO</label>
+          <textarea class="w3-input w3-border" type="text" name="bio"  rows="4" cols="50" >'{{object.bio}}'</textarea>
+        </div>
+        <img src='{{object.image.url}}' alt = '{{object.firstname}}' id='imageView' width='400px;' name='image'></img>
+        <div class="w3-section">
+          <label>Avatar</label>
+          <input class="w3-input w3-border" type="file" name="image" id='image' accept='image/*'  >
+        </div>   
+        <div class=w3-section>
+          <label for="phone">Enter a phone number:</label><br><br>
+          <input class='w3-input w3-border' type="tel" id="phone" name="phone" placeholder="998-00-000-00-00" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}-[0-9]{2}-[0-9]{2}" required><br><br>
+        </div>   
+    
+
+        <button type="submit" class="w3-button w3-black w3-margin-bottom"><i class="fa fa-save w3-margin-right"></i>Save changes</button>
+      </form>
+    </div>
+{% endblock content %}

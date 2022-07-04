@@ -20,6 +20,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
 </style>
 </head>
 <body class="w3-light-grey w3-content" style="max-width:1600px">
+  {% comment %} main nav bar {% endcomment %}
   <header class="header-area sticky">
     <div class="container">
         <div class="row">
@@ -88,6 +89,16 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
     <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button w3-padding"><i class="fa fa-user fa-fw w3-margin-right"></i>ABOUT</a> 
     <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button w3-padding"><i class="fa fa-envelope fa-fw w3-margin-right"></i>CONTACT</a>
   </div>
+  {% if user.slug == userprofile.slug %}
+  <div class="w3-bar-block">
+    <a href='{% url 'addnewpost' userprofile.slug %}'><i class="fa fa-plus   w3-bar-item w3-button w3-padding"><strong class='w3-margin-left'>Add new post</strong></i></a>
+
+  </div>
+  <div class="w3-bar-block">
+    <a href='{% url 'editprofile' userprofile.slug %}'><i class="fa fa-edit   w3-bar-item w3-button w3-padding"><strong class='w3-margin-left'>Edit profile</strong></i></a>
+
+  </div>
+  {% endif %}
   <div class="w3-panel w3-large">
     <i class="fa fa-facebook-official w3-hover-opacity"></i>
     <i class="fa fa-instagram w3-hover-opacity"></i>
@@ -96,6 +107,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
     <i class="fa fa-twitter w3-hover-opacity"></i>
     <i class="fa fa-linkedin w3-hover-opacity"></i>
   </div>
+
 </nav>
 
 <!-- Overlay effect when opening sidebar on small screens -->
@@ -109,19 +121,21 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
     <a href="#"><img src="/w3images/avatar_g2.jpg" style="width:65px;" class="w3-circle w3-right w3-margin w3-hide-large w3-hover-opacity"></a>
     <span class="w3-button w3-hide-large w3-xxlarge w3-hover-text-grey" onclick="w3_open()"><i class="fa fa-bars"></i></span>
     <div class="w3-container">
-    <h1><b>My Portfolio</b></h1>
+    <h1><b>MyProfile page</b></h1>
     <div class="w3-section w3-bottombar w3-padding-16">
       <span class="w3-margin-right">Filter:</span> 
+      <a  style='color:white;' href='{% url 'profile' slug=userprofile.slug %}'> <button id = '{{cat.id}}'  class="w3-button w3-black">All</button></a>
+
       {% for cat in categories.catfirst %}
 
-          <button class="w3-button w3-white">{{cat.title}}</button>
+      <a  style='color:white;' href='{% url 'profile' slug=userprofile.slug cat_id=cat.id %}'> <button id = '{{cat.id}}'  class="w3-button w3-white">{{cat.title}}</button></a>
 
       {% endfor %}
       <div class="w3-dropdown-hover">
         <button class="w3-button w3-gray">See more</button>
         <div class="w3-dropdown-content w3-bar-block w3-border">
           {% for cat in categories.catsecond %}
-          <a href="#" class="w3-bar-item w3-button">{{cat.title}}</a>  
+                <a  class="w3-bar-item w3-button" href='{% url 'profile' slug=userprofile.slug cat_id=cat.id %}' >{{cat.title}}</a>  
           {% endfor %}
         </div>
       </div>
@@ -220,6 +234,66 @@ $("#editpostform").on('click',function editpost(x) {
   return false; {% endcomment %}
 
 })
+
+function catbutton(cat_id){
+  console.log('cat  button clicked');
+  $.ajax({
+      headers: {
+          "X-Requested-With": "XMLHttpRequest",
+          "X-CSRFToken": '{{ csrf_token }}',
+        },
+      type: 'GET',
+      dataType: 'json',
+      url: '',
+
+      data: {'cat_id':cat_id,'test':'test'}  ,
+      
+      success: (data) => {
+         
+          text=''
+     
+          data.forEach(function(elem) {
+            title =elem.fields["title"];
+            anons = elem.fields.anons;
+            created_date = elem.fields.created_date;
+            image = elem.fields.image;
+            console.log(image);
+              text+=`
+              <div class="w3-third w3-container w3-margin-bottom">
+                <img src="${image}" alt="Norway" style="width:100%" class="w3-hover-opacity">
+                <div class="w3-container w3-white">
+                <p><b>${title} </b></p>
+                <p>${anons} </p>
+                <p ><a style='color:blue;'  href="{% url 'profile' userprofile.slug %}">{{userprofile.first_name}}</a> on {{post.created_date}}</p>
+                <p style='margin-left:20px;'><strong>Views: </strong>{{post.get_count_of_views}}    <strong style='margin-left:20px;'>Likes: </strong>{{post.get_count_of_likes}} <strong style='margin-left:20px;'>Comments: </strong>{{post.get_count_of_comments}}</p>
+                {% if user.id == post.author.id  %}
+                <div class="w3-panel " style='display:flex;flex-wrap:wrap;margin:0;padding:0;align-items: center;
+                justify-content: center;'>
+                <button class="w3-button w3-dark-grey w3-padding-small w3-margin-top w3-margin-bottom ">
+                    <i class="fa fa-edit" style="font-size:16px"></i><i class='w3-margin-left'><a href='{% url 'editpost' slug=userprofile.slug id=post.id %}'>Edit</a></i>
+                </button>
+                <button class="w3-button w3-dark-grey w3-padding-small w3-margin-top w3-margin-bottom w3-margin-left">
+                    <i class="fa fa-remove" style="font-size:16px;color:white;"></i><i class='w3-margin-left'>Remove</i>
+                </button>
+            </div>
+                {% endif %}
+            </div>
+            </div>
+              `;
+          });
+          
+          $('#postcontainer').html(text);
+
+     
+      },
+      error: (error) => {
+          console.log(error);
+          console.log('Error');
+      }  
+  });
+  return false; 
+
+}
 </script>
 
 </body>
