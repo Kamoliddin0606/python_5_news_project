@@ -29,18 +29,24 @@ class CustomUser(AbstractUser):
      comments = self.get_count_of_comments()
      likes =  self.get_count_of_likes()
      maxcount = max(views,likes,comments)
+     if maxcount ==0:
+        maxcount=1
      viewsProcent = int((views/maxcount)*100) 
      likesProcent = int((likes/maxcount)*100) 
      commentsProcent = int((comments/maxcount)*100) 
      return {'Likes':{'procent':likesProcent,'count':likes},'Views':{'procent':viewsProcent,'count':views},'Comments':{'procent':commentsProcent,'count':comments}}
     def get_count_of_views(self):
-        
         objects = self.post_set.all()
         count = 0
         for post in objects:
-            count+=get_hitcount_model().objects.get_for_object(post).hits
+            count+=get_hitcount_model().objects.get_for_object(post).hits 
+        return count        
+        # objects = self.post_set.all()
+        # count = 0
+        # for post in objects:
+        #     count+=get_hitcount_model().objects.get_for_object(post).hits
 
-        return count
+        # return count
         
     def get_count_of_comments(self):
         
