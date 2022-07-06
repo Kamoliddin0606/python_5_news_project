@@ -15,6 +15,7 @@ from django.http import HttpResponse, JsonResponse
 from django.core import serializers
 from django.forms.models import model_to_dict
 import json
+import datetime
 # class Login(LoginView):
 #     template_name = 'registrations/login.html'
 
@@ -72,7 +73,7 @@ def CreateUser(request):
     return render(request=request, template_name='registrations/registration.html', context={'form':form})
     
 def profile(request, slug, cat_id=None):
-    
+    catsecond = None
     if Category.objects.all().count() <7 :
         catfirst = Category.objects.all()
     else:
@@ -101,6 +102,7 @@ def profile(request, slug, cat_id=None):
         
         return HttpResponse(data,
                          content_type="application/json")
+    print(posts)
     context ={'posts':posts, 'categories':categories,'userprofile':CustomUser.objects.get(slug=slug)}
     return render(request=request, template_name='profile/profile.html', context=context)
 
@@ -167,7 +169,7 @@ def removepost(request, slug, id):
 def detailpost(request,slug, id):
     pass
 def editprofile(request, slug):
-
+    catsecond = None
     form = UserChangeForm()
     object = CustomUser.objects.get(slug=slug)
     categoriessellect = Category.objects.all()
@@ -183,15 +185,20 @@ def editprofile(request, slug):
         
     }
     if request.method == 'POST':
-       
+        print(request.POST.get('date_joined'))
+        _mutable =request.POST._mutable
+        request.POST._mutable = True
+        request.POST['date_joined']=datetime.datetime.now()
+        request.POST._mutable = _mutable
         form = UserChangeForm(request.POST, request.FILES, instance=object)
-        print(form)
+        
         print(form)
         if form.is_valid():
             
             user =form.save(commit=False)
             user.slug = object.slug
-            return redirect('profile', object.slug)
+            user.save()
+            return redirect('profile', user.slug)
     
 
         is_ajax = request.headers.get('X-Requested-With')== 'XMLHttpRequest'
@@ -215,7 +222,7 @@ def editprofile(request, slug):
 def detailpostprofile(request, slug, id):
     author = CustomUser.objects.get(slug=slug)
     
-    
+    catsecond=None
     if id:
         post = Post.objects.get(id=id)
     if Category.objects.all().count() <7 :

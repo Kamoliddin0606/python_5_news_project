@@ -79,7 +79,8 @@ def detailPost(request ,pk):
     comments = post.PostComment.filter(parent_comment=None).order_by('-created')
     tags = post.tags.all()
     print(post, request.user)
-    likesentobj = Like.objects.filter(post=post, author=request.user)
+    
+    likesentobj = Like.objects.filter(post=post, author=CustomUser.objects.get(id=post.author_id))
     print(likesentobj)
     context = {'post':post, 'latestnews':latestnews, 'comments':comments,'tags':tags}
     if likesentobj:

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'taggit',
     'phonenumber_field',
     
+    
 ]
 
 MIDDLEWARE = [
