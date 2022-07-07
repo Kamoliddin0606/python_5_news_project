@@ -38,6 +38,7 @@ class CustomUser(AbstractUser):
     def get_count_of_views(self):
         objects = self.post_set.all()
         count = 0
+        sonlar = 12
         for post in objects:
             count+=get_hitcount_model().objects.get_for_object(post).hits 
         return count        

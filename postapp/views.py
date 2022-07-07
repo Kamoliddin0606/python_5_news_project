@@ -20,7 +20,6 @@ def category(request, pk=None):
     objectcarousel = Category.objects.get(pk=pk).post.order_by('-created_date')[:7]
     objects = Category.objects.get(pk=pk).post.order_by('-created_date')[:7]
     objectstrend = Category.objects.get(pk=pk).post.order_by('-views')[:10]
-    print('____________',objectcarousel, '____________')
     catsecond =''
     if Category.objects.all().count() <7 :
         catfirst = Category.objects.all()
@@ -78,10 +77,8 @@ def detailPost(request ,pk):
     
     comments = post.PostComment.filter(parent_comment=None).order_by('-created')
     tags = post.tags.all()
-    print(post, request.user)
     
     likesentobj = Like.objects.filter(post=post, author=CustomUser.objects.get(id=post.author_id))
-    print(likesentobj)
     context = {'post':post, 'latestnews':latestnews, 'comments':comments,'tags':tags}
     if likesentobj:
         if likesentobj[0].like:
@@ -90,11 +87,9 @@ def detailPost(request ,pk):
             context['like']=False
     else:
         context['like']=None
-    print(context)
     hit_count = get_hitcount_model().objects.get_for_object(post)
     hits = hit_count.hits
    
-    print(hits)
   
     hit_count_response = HitCountMixin.hit_count(request, hit_count)
     hitcontext = context['hitcount'] = {'pk': hit_count.pk, 'hits':hits}
@@ -117,12 +112,10 @@ def detailPost(request ,pk):
 
             return HttpResponseRedirect(request.path_info)
         elif is_ajax:
-            print('_____got ajax___')
             try:
                 Likeobj = Like.objects.get(post=post, author=request.user)
             except:
                 Likeobj=False
-            print(Likeobj)
             if Likeobj:
                 if Likeobj.like:
                     Likeobj.like = False
@@ -137,7 +130,6 @@ def detailPost(request ,pk):
                 Like.objects.create(post=post, author=request.user, like=True)
                 return JsonResponse({'like':True})  
 
-            print('______',request.POST)
                 
      
     return render(request=request, template_name='postapp/single-blog.html', context=context)
@@ -145,10 +137,7 @@ def detailPost(request ,pk):
     
 def contact(request):
     if request.method =="GET":
-        print('__post_')
         is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
-        print(request.headers)
-        print(is_ajax)
         if is_ajax:
             form = ContactForm(request.GET)
             if form.is_valid():
@@ -156,8 +145,6 @@ def contact(request):
                 message = 'Your message is save to data base!'
                 
                 return JsonResponse({'result':True, 'message':message})
-            print(form)
-            print(request.GET)
             message = 'we must enter all dates'
            
             return JsonResponse({'result':False, 'message':message})

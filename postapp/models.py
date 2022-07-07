@@ -32,15 +32,13 @@ class Post(models.Model):
         return self.title
     def get_count_of_likes(self):
         count = Like.objects.filter(post=self.id).count()
-        print(count)
         return count
     def get_count_of_comments(self):
         count = self.PostComment.all().count()
-        print(count)
         return count
     def get_count_of_views(self):
         count = get_hitcount_model().objects.get_for_object(self).hits
-        print(count)
+        
         return count
 class Like(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE ,related_name='like')

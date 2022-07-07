@@ -1,5 +1,5 @@
-from multiprocessing import managers
 import os
+from django.core.files.temp import NamedTemporaryFile
 from traceback import print_tb
 from unicodedata import category
 from urllib import request
@@ -16,6 +16,8 @@ from django.core import serializers
 from django.forms.models import model_to_dict
 import json
 import datetime
+from django.core.files import File  # you need this somewhere
+import urllib
 # class Login(LoginView):
 #     template_name = 'registrations/login.html'
 
@@ -189,16 +191,32 @@ def editprofile(request, slug):
         _mutable =request.POST._mutable
         request.POST._mutable = True
         request.POST['date_joined']=datetime.datetime.now()
+
+
+        
         request.POST._mutable = _mutable
         form = UserChangeForm(request.POST, request.FILES, instance=object)
         
         print(form)
         if form.is_valid():
-            
-            user =form.save(commit=False)
-            user.slug = object.slug
-            user.save()
-            return redirect('profile', user.slug)
+            print('_____ valid _____')
+            profileuser = CustomUser.objects.filter(slug=slug)
+            profileuser.update(
+                username = request.POST.get('username'),
+                email = request.POST.get('email'),
+                bio = request.POST.get('bio'),
+                avatar = request.POST.get('avatar'),
+                phonenumber = request.POST.get('phonenumber'),
+                first_name = request.POST.get('first_name'),
+                last_name = request.POST.get('last_name'),
+            )
+            # if 'image' in request.FILES:
+                
+            #     profileuser.update(avatar=request.FILES['image'])  
+               
+          
+
+            return redirect('profile', slug)
     
 
         is_ajax = request.headers.get('X-Requested-With')== 'XMLHttpRequest'
